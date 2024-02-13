@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家計簿</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+
+    <!--ここからヘッダー-->
+    <header class="d-flex justify-content-center py-3 text-bg-secondary">
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="#" class="nav-link text-white">ホーム</a></li>
+            <li class="nav-item"><a href="./monthly-report.html" class="nav-link text-white">月別比較</a></li>
+            <li class="nav-item"><a href="#" class="nav-link text-white">分析</a></li>
+            <li class="nav-item"><a href="#" class="nav-link text-white">概要</a></li>
+        </ul>
+    </header>
+    <!--ここまでヘッダー-->
+
+    <div class="container ">
+        <h1 class="mt-5">家計簿</h1>
+        
+        <!--ここからフォーム-->
+        <div class="mt-5">
+            <form class="row gy-2 gx-3 align-items-center">
+
+                <div class="col-auto">
+                    <label for="autoSizingInput" class="visually-hidden">日付選択</label>
+                    <input type="date" class="form-control" id="autoSizingInput">
+                </div>
+
+                <div class="col-auto">
+                    <label for="autoSizingInput" class="visually-hidden">日付選択</label>
+                    <input type="text" class="form-control" id="autoSizingInput" placeholder="利用場所">
+                </div>
+
+                <div class="col-auto">
+                    <label for="autoSizingInput" class="visually-hidden">項目選択</label>
+                    <select class="form-select" id="autoSizingSelect">
+                        <option value="1">食費</option>
+                        <option value="2">日用品</option>
+                        <option value="3">交際費</option>
+                        <option value="4">収入</option>
+                    </select>
+                </div>
+
+                <div class="col-auto">
+                    <label for="autoSizingInput" class="visually-hidden">項目選択</label>
+                    <select class="form-select" id="autoSizingSelect">
+                        <option value="1">翔太郎</option>
+                        <option value="2">更</option>
+                    </select>
+                </div>
+
+                <div class="col-auto">
+                    <label for="autoSizingInputGroup" class="visually-hidden">金額</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="autoSizingInputGroup" placeholder="金額">
+                    </div>
+                </div>
+
+                <div class="col-auto">
+                    <label for="autoSizingInputGroup" class="visually-hidden"></label>
+                    <button type="submit" class="form-control btn btn-primary">登録</button>
+                </div>
+
+            </form>
+        </div>
+        <!--ここまでフォーム-->
+
+
+        <!--ここから表-->
+        <div class="mt-5">
+
+        <nav aria-label="ページ送りの実例">
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">前月へ</a></li>
+              <li class="page-item"><a class="page-link" href="#">次月へ</a></li>
+            </ul>
+        </nav>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>年月日</th>
+                        <th>利用場所</th>
+                        <th>項目</th>
+                        <th>支払った人</th>
+                        <th>金額</th>
+
+                    </tr>
+                </thead>
+
+                <tbody class="table-group-divider">
+                    <tr>
+                        <td>2024-01-24</td>
+                        <td>アピタ</td>
+                        <td>食費</td>
+                        <td>翔太郎</td>
+                        <td>50000円</td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-24</td>
+                        <td>アピタ</td>
+                        <td>食費</td>
+                        <td>翔太郎</td>
+                        <td>5000円</td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-24</td>
+                        <td>アピタ</td>
+                        <td>食費</td>
+                        <td>翔太郎</td>
+                        <td>5000円</td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-24</td>
+                        <td>アピタ</td>
+                        <td>食費</td>
+                        <td>翔太郎</td>
+                        <td>5000円</td>
+                    </tr>
+                    <tr class="table-success">
+                        <td>2024-01-24</td>
+                        <td>会社</td>
+                        <td>収入</td>
+                        <td>翔太郎</td>
+                        <td>250000円</td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-24</td>
+                        <td>アピタ</td>
+                        <td>食費</td>
+                        <td>翔太郎</td>
+                        <td>5000円</td>
+                    </tr>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--ここまで表-->
+
+        <!--ここからトータル情報-->
+        <div class="mt-5">
+
+            <div class="d-flex justify-content-center">
+                <h4>1月度収入：250000円　支出：70000円　差額：+180000円</h4>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <h4>「さら」が「しょうたろう」に5000円払う</h4>
+            </div>
+        </div>
+        <!--ここまでトータル情報-->
+
+
+    </div>
+
+    <script>
+        flatpickr.localize(flatpickr.l10ns.ja);
+        flatpickr('#calendar');
+    </script>
+
+</body>
+
+</html>
