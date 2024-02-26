@@ -16,7 +16,6 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
-*.properties
 
 
 ### IntelliJ IDEA ###
@@ -37,3 +36,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+*.properties
+
