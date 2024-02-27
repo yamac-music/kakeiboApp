@@ -4,3 +4,6 @@ spring:
     password: postgres
     url: jdbc:postgresql://localhost:5432/kakeibodb
     username: postgres
+
+  messages:
+    basename: ValidationMessages

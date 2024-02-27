@@ -8,6 +8,7 @@ import com.example.kakeiboApp.entity.Kakeibo;
 public interface KakeiboService {
 	//全件取得
 	Iterable<Kakeibo> selectAll();
+
 	
 	//IDをキーに1件取得
 	Optional<Kakeibo> selectOneByID(Integer id);

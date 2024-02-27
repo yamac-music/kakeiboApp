@@ -1,5 +1,7 @@
 package com.example.kakeiboApp.controller;
 
+import java.sql.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,6 +51,7 @@ public class KakeiboController {
 			RedirectAttributes redirectAttributes) {
 		
 		Kakeibo kakeibo = new Kakeibo();
+		
 		kakeibo.setDate(kakeiboForm.getDate());
 		kakeibo.setPlace(kakeiboForm.getPlace());
 		kakeibo.setCategory(kakeiboForm.getCategory());
@@ -57,7 +60,7 @@ public class KakeiboController {
 		
 		
 		System.out.println("----------------");
-		System.out.println(kakeiboForm.getDate());
+		System.out.println(kakeiboForm.getDate() instanceof Date);
 		System.out.println(kakeiboForm.getPlace());
 		System.out.println(kakeiboForm.getCategory());
 		System.out.println(kakeiboForm.getPerson());

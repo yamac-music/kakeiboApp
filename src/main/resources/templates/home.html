@@ -42,7 +42,7 @@
     		th:object = "${kakeiboForm}">
     	
 		    	<div class="col-auto">
-		            <input type="date" class="form-control" th:field="*{date}">
+		            <input type="date" value="2024-01-01" class="form-control" th:field="*{date}" max="9999-12-31">
 		        </div>
     	
                 <div class="col-auto">
