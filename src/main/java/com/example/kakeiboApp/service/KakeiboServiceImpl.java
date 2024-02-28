@@ -18,7 +18,7 @@ public class KakeiboServiceImpl implements KakeiboService {
 	@Override
 	public Iterable<Kakeibo> selectAll() {
 		// TODO 自動生成されたメソッド・スタブ
-		return repository.findAll();
+		return repository.findAllByOrderByDateDesc();
 	}
 
 	@Override
@@ -44,6 +44,12 @@ public class KakeiboServiceImpl implements KakeiboService {
 		// TODO 自動生成されたメソッド・スタブ
 		//一旦は物理削除を実装
 		repository.deleteById(id);
+	}
+
+	@Override
+	public Integer totalPrice() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
 	}
 
 }
