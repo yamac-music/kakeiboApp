@@ -39,10 +39,15 @@ public class KakeiboController {
 		
 		//一覧取得
 		Iterable<Kakeibo> list = service.selectAll();
+		Integer currentMonthTotal = service.calcTotalPriceCurrentMonth();
 		
 		//Modelに格納
 		model.addAttribute("list", list);
 		model.addAttribute("title", "家計簿　登録用フォーム");
+		model.addAttribute("currentMonthTotal", currentMonthTotal);
+		
+		System.out.println("2月合計："+service.calcTotalPriceCurrentMonth()+"円");
+
 		return "home";
 	}
 	
@@ -74,7 +79,6 @@ public class KakeiboController {
 			redirectAttributes.addFlashAttribute("complete", "入力が完了しました");
 			return "redirect:/home";
 		}
-		
 
 		
 	}

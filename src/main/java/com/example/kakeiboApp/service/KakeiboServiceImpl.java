@@ -18,7 +18,7 @@ public class KakeiboServiceImpl implements KakeiboService {
 	@Override
 	public Iterable<Kakeibo> selectAll() {
 		// TODO 自動生成されたメソッド・スタブ
-		return repository.findAllByOrderByDateDesc();
+		return repository.findCurrentMonth();
 	}
 
 	@Override
@@ -47,9 +47,10 @@ public class KakeiboServiceImpl implements KakeiboService {
 	}
 
 	@Override
-	public Integer totalPrice() {
+	public Integer calcTotalPriceCurrentMonth() {
 		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return repository.calcTotalPriceCurrentMonth();
+
 	}
 
 }

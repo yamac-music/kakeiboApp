@@ -22,5 +22,5 @@ public interface KakeiboService {
 	void deleteOneByID(Integer id);
 	
 	//priceを合計
-	Integer totalPrice();
+	Integer calcTotalPriceCurrentMonth();
 }
