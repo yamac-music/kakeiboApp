@@ -9,9 +9,20 @@ Price
 ・今月1か月分だけ表示して、その中からPriceの合計、更と翔太郎それぞれのPriceの合計を出す
 ・誰が誰に何円払わないといけないか、差分を計算して、表示
 
+<<<<<<< HEAD
 ・項目別の支出を見たい（少なくとも食費と日用品別で）
 ・項目数が少ないので増やす（正規化もやる）
+=======
+・今月1か月分だけ表示して、その中からPriceの合計、更と翔太郎それぞれのPriceの合計を出す
+>>>>>>> branch 'master' of https://github.com/yamac-music/kakeiboApp.git
 
+<<<<<<< HEAD
 月別の支出
 
 ・
+=======
+月別比較
+・月毎に集計する機能を実装する
+・カテゴリ毎、人毎
+・グラフで推移を確認する機能
+>>>>>>> branch 'master' of https://github.com/yamac-music/kakeiboApp.git
