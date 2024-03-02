@@ -1,5 +1,6 @@
 package com.example.kakeiboApp.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,19 @@ public class KakeiboServiceImpl implements KakeiboService {
 		// TODO 自動生成されたメソッド・スタブ
 		return repository.calcTotalPriceCurrentMonth();
 
+	}
+
+	@Override
+	public List<Integer> calcPersonTotal() {
+		// TODO 自動生成されたメソッド・スタブ
+		List<Integer>  priceList = repository.calcPersonTotalPriceCurrentMonth(); 
+		int larger = Math.max(priceList.get(0), priceList.get(1));
+		int smaller = Math.min(priceList.get(0), priceList.get(1));
+		int diff = larger - smaller; 
+		
+		priceList.add(diff);
+		
+		return priceList;
 	}
 
 }

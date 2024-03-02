@@ -1,6 +1,7 @@
 package com.example.kakeiboApp.controller;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,12 +43,16 @@ public class KakeiboController {
 		Iterable<Kakeibo> list = service.selectAll();
 		Integer currentMonthTotal = service.calcTotalPriceCurrentMonth();
 		
+		//priceList取得
+		List<Integer> priceList = service.calcPersonTotal();
+		
 		//Modelに格納
 		model.addAttribute("list", list);
 		model.addAttribute("title", "家計簿　登録用フォーム");
 		model.addAttribute("currentMonthTotal", currentMonthTotal);
-		
-		System.out.println("2月合計："+service.calcTotalPriceCurrentMonth()+"円");
+		model.addAttribute("priceList", priceList);
+
+		System.out.println(service.calcPersonTotal());
 
 		return "home";
 	}

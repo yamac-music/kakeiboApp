@@ -1,5 +1,6 @@
 package com.example.kakeiboApp.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.example.kakeiboApp.entity.Kakeibo;
@@ -21,6 +22,9 @@ public interface KakeiboService {
 	//家計簿を削除
 	void deleteOneByID(Integer id);
 	
-	//priceを合計
+	//当月のpriceを合計
 	Integer calcTotalPriceCurrentMonth();
+	
+	//翔太郎と更の当月priceを合計
+	List<Integer> calcPersonTotal();
 }

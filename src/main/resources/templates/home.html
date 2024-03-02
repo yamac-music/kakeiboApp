@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>家計簿</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -42,19 +43,19 @@
     		th:object = "${kakeiboForm}">
     	
 		    	<div class="col-auto">
-		            <input type="date" value="2024-01-01" class="form-control" th:field="*{date}" max="9999-12-31">
+		            <input type="date" value="2024-01-01" class="form-control" th:field="*{date}" max="9999-12-31" placeholder="日付">
 		        </div>
     	
                 <div class="col-auto">
-                    <input type="text" class="form-control" placeholder="利用場所" th:field="*{place}">
+                    <input type="text" class="form-control" placeholder="用途" th:field="*{place}">
                 </div>
 
                 <div class="col-auto">
                     <select class="form-select" th:field="*{category}">
                         <option value="食費" th:selected="${category == 食費}">食費</option>
                         <option value="日用品" th:selected="${category == 日用品}">日用品</option>
-                        <option value="交際費" th:selected="${category == 交際費}">交際費</option>
-                        <option value="交通費" th:selected="${category == 交通費}">交通費</option>   
+                        <option value="交通費" th:selected="${category == 交通費}">交通費</option>
+                        <option value="水道光熱費" th:selected="${category == 水道光熱費}">水道光熱費</option>                        
                         <option value="その他支出" th:selected="${category == その他支出}">その他支出</option>                        
                         <option value="収入" th:selected="${category == 収入}">収入</option>
                     </select>
@@ -106,24 +107,26 @@
 				<thead>
 		            <tr>
 		            <th>年月日</th>
-		            <th>利用場所</th>
+		            <th>用途</th>
 		            <th>項目</th>
-		            <th>支払った人</th>
+		            <th>誰</th>
 		            <th>金額</th>
+		            <th>削除</th>
+
 		            </tr>
 	            </thead>
 			<tbody class="table-group-divider">
 			  		<tr th:each="obj : ${list}">
-						<td th:text="${obj.date}"></td>
-						<td th:text="${obj.place}"></td>
-						<td th:text="${obj.category}"></td>
-						<td th:text="${obj.person}"></td>
-						<td th:text="${obj.price}+'円'"></td>
+						<td class="align-middle" th:text="${obj.date}"></td>
+						<td class="align-middle" th:text="${obj.place}"></td>
+						<td class="align-middle" th:text="${obj.category}"></td>
+						<td class="align-middle" th:text="${obj.person}"></td>
+						<td class="align-middle" th:text="${obj.price}+'円'"></td>
 						<!-- 削除ボタン -->
-						<td>
+						<td class="align-middle">
 							<form method = "POST" th:action="@{/home/delete}">
 								<input type="hidden" name = "id" th:value="${obj.id}">
-								<input type="submit" value="削除">
+								<input type="submit" class="btn btn-danger " value="削除">
 							</form>
 						</td>
                     </tr>
@@ -135,6 +138,12 @@
 				var month = date.getMonth()+1;
 				document.write(month+"月の合計金額：[[${currentMonthTotal}]]円")
 			</script></h3>
+			
+			<div class="mt-2" th:each="price : ${priceList}">
+				<div th:text="${price}"></div>
+			</div>
+			
+			
 			
 		</div>
 	</div>
