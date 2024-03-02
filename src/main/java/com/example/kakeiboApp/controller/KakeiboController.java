@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.kakeiboApp.entity.Kakeibo;
@@ -79,7 +80,15 @@ public class KakeiboController {
 			redirectAttributes.addFlashAttribute("complete", "入力が完了しました");
 			return "redirect:/home";
 		}
-
-		
 	}
+	
+	//key : id でデータ削除
+	@PostMapping("/delete")
+	public String delete(@RequestParam("id") String id, Model model, RedirectAttributes redirectAttributes) {
+		//1件削除
+		service.deleteOneByID(Integer.parseInt(id));
+		redirectAttributes.addFlashAttribute("delcomplete", "削除が完了しました");
+		return "redirect:/home";
+	}
+	
 }

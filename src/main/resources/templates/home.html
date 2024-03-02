@@ -54,6 +54,7 @@
                         <option value="食費" th:selected="${category == 食費}">食費</option>
                         <option value="日用品" th:selected="${category == 日用品}">日用品</option>
                         <option value="交際費" th:selected="${category == 交際費}">交際費</option>
+                        <option value="交通費" th:selected="${category == 交通費}">交通費</option>   
                         <option value="その他支出" th:selected="${category == その他支出}">その他支出</option>                        
                         <option value="収入" th:selected="${category == 収入}">収入</option>
                     </select>
@@ -76,12 +77,27 @@
                     <button type="submit" class="form-control btn btn-primary">登録</button>
                 </div>
                 
-                <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-danger"></div>
-                <div th:if="${#fields.hasErrors('place')}" th:errors="*{place}" class="text-danger"></div>
-                <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger"></div>
+				<!-- バリデーションエラー表示 -->                
+	            <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-danger"></div>
+	            <div th:if="${#fields.hasErrors('place')}" th:errors="*{place}" class="text-danger"></div>
+	            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger"></div>    
+            </form>                
 
-                 
-    	</form></div>
+
+			<!-- 入力が完了・削除が完了した時のメッセージ -->
+	        <div th:if="${delcomplete}" th:text="${delcomplete}" class="alert alert-success mt-2" role="alert"></div>                
+	        <div th:if="${complete}" th:text="${complete}" class="alert alert-success mt-2" role="alert"></div>
+
+			<!-- 当月のデータが一件もない場合に表示 -->
+			<div class="alert alert-warning mt-2" role="alert" th:if="${#lists.isEmpty(list)}"><script>
+				var date = new Date();
+				var month = date.getMonth()+1;
+				document.write(month+"月の家計簿がまだ登録されていません")
+			</script></div>
+			
+
+			
+    	</div>
     	
     	<!--　一覧表示 -->
 		<div class="mt-5">
@@ -103,24 +119,23 @@
 						<td th:text="${obj.category}"></td>
 						<td th:text="${obj.person}"></td>
 						<td th:text="${obj.price}+'円'"></td>
+						<!-- 削除ボタン -->
+						<td>
+							<form method = "POST" th:action="@{/home/delete}">
+								<input type="hidden" name = "id" th:value="${obj.id}">
+								<input type="submit" value="削除">
+							</form>
+						</td>
                     </tr>
 			</table>
 			
-		<!-- 当月のデータがある場合に場合に表示 -->
-		<h3 th:unless="${#lists.isEmpty(list)}"><script>
-			var date = new Date();
-			var month = date.getMonth()+1;
-			document.write(month+"月の合計金額：[[${currentMonthTotal}]]円")
-		</script></h3>
-		
-		<!-- 当月のデータが一件もない場合に表示 -->
-		<p class="alert alert-warning" role="alert" th:if="${#lists.isEmpty(list)}"><script>
-			var date = new Date();
-			var month = date.getMonth()+1;
-			document.write(month+"月の家計簿がまだ登録されていません")
-		</script>
-		</p>
-
+			<!-- 当月のデータがある場合に場合に表示 -->
+			<h3 class="mt-5" th:unless="${#lists.isEmpty(list)}"><script>
+				var date = new Date();
+				var month = date.getMonth()+1;
+				document.write(month+"月の合計金額：[[${currentMonthTotal}]]円")
+			</script></h3>
+			
 		</div>
 	</div>
 </body>
