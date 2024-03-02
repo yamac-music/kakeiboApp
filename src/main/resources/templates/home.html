@@ -85,6 +85,7 @@
     	
     	<!--　一覧表示 -->
 		<div class="mt-5">
+			<!-- 当月のデータがある場合に場合に表示 -->
     		<table class="table" th:unless="${#lists.isEmpty(list)}">
 				<thead>
 		            <tr>
@@ -103,17 +104,24 @@
 						<td th:text="${obj.person}"></td>
 						<td th:text="${obj.price}+'円'"></td>
                     </tr>
-				
 			</table>
 			
+		<!-- 当月のデータがある場合に場合に表示 -->
+		<h3 th:unless="${#lists.isEmpty(list)}"><script>
+			var date = new Date();
+			var month = date.getMonth()+1;
+			document.write(month+"月の合計金額：[[${currentMonthTotal}]]円")
+		</script></h3>
 		
-		<h3>2月の合計金額：[[${currentMonthTotal}]]円</h3>
-		<!-- 一件もない場合に表示 -->
+		<!-- 当月のデータが一件もない場合に表示 -->
+		<p class="alert alert-warning" role="alert" th:if="${#lists.isEmpty(list)}"><script>
+			var date = new Date();
+			var month = date.getMonth()+1;
+			document.write(month+"月の家計簿がまだ登録されていません")
+		</script>
+		</p>
 
 		</div>
-		
-
-    	
 	</div>
 </body>
 </html>
