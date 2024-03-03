@@ -133,19 +133,33 @@
 			</table>
 			
 			<!-- 当月のデータがある場合に場合に表示 -->
-			<h3 class="mt-5" th:unless="${#lists.isEmpty(list)}"><script>
-				var date = new Date();
-				var month = date.getMonth()+1;
-				document.write(month+"月の合計金額：[[${currentMonthTotal}]]円")
-			</script></h3>
 			
-			<div class="mt-2" th:each="price : ${priceList}">
-				<div th:text="${price}"></div>
+			<div class="mt-2 row d-flex justify-content-center">
+				<!-- 合計金額を表示 -->
+				<h4 th:unless="${#lists.isEmpty(list)}" class="col-auto">
+					<script>
+					var date = new Date();
+					var month = date.getMonth()+1;
+					document.write(month+"月の合計金額：[[${currentMonthTotal}]]円")
+					</script>			
+				</h4>
+
+				<!-- それぞれの人の合計金額を表示 -->
+				<div th:each="price : ${priceList}" class="col-auto">
+					<h4>[[ ${price.person} ]] の合計金額：[[ ${price.totalprice} ]]円</h4>
+				</div>
+				
+				<!-- 折半の場合，誰が誰にいくら払う必要があるかを表示 -->
+				<h4 th:unless="${#lists.isEmpty(list)}" class="col-auto">
+					<script>
+					var date = new Date();
+					var month = date.getMonth()+1;
+					document.write(month+"月の合計金額：[[${currentMonthTotal}]]円")
+					</script>			
+				</h4>
+				
 			</div>
 			
-			
-			
-		</div>
 	</div>
 </body>
 </html>

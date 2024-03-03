@@ -1,6 +1,5 @@
 package com.example.kakeiboApp.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.kakeiboApp.entity.Kakeibo;
+import com.example.kakeiboApp.entity.PriceTotal;
 import com.example.kakeiboApp.repository.KakeiboRepository;
 
 @Service
@@ -55,15 +55,9 @@ public class KakeiboServiceImpl implements KakeiboService {
 	}
 
 	@Override
-	public List<Integer> calcPersonTotal() {
+	public Iterable<PriceTotal> calcPersonTotal() {
 		// TODO 自動生成されたメソッド・スタブ
-		List<Integer>  priceList = repository.calcPersonTotalPriceCurrentMonth(); 
-		int larger = Math.max(priceList.get(0), priceList.get(1));
-		int smaller = Math.min(priceList.get(0), priceList.get(1));
-		int diff = larger - smaller; 
-		
-		priceList.add(diff);
-		
+		Iterable<PriceTotal>  priceList = repository.calcPersonTotalPriceCurrentMonth(); 
 		return priceList;
 	}
 
