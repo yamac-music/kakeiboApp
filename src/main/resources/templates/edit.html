@@ -31,19 +31,20 @@
     </header>
     <!--ここまでヘッダー-->
     
-    <div class = "container">   
-    	<h3 class="mt-5" th:text = "${title}"></h3>
-    	<p th:if="${complete}" th:text="${complate}"></p>
-    	
-    	<!-- Form -->
+    <div class = "container">
+		
+		<h3 class="mt-5" th:text = "${title}"></h3>
+		<h3>[[ ${kakeibo} ]]</h3>
+
+		<!-- Edit用Form-->
     	<div class="mt-5">
 		<form class="row gy-2 gx-3 align-items-center" 
     		th:method = "post"
-    		th:action = "@{/home/insert}"
+    		th:action = "@{/home/edit}"
     		th:object = "${kakeiboForm}">
     	
 		    	<div class="col-auto">
-		            <input type="date" class="form-control" th:field="*{date}" max="9999-12-31">
+		            <input type="hidden" class="form-control" th:field="*{date}" max="9999-12-31" placeholder="日付">
 		        </div>
     	
                 <div class="col-auto">
@@ -76,7 +77,7 @@
                 </div>
                 
                 <div class="col-auto">
-                    <button type="submit" class="form-control btn btn-primary">登録</button>
+                    <button type="submit" class="form-control btn btn-primary">編集確定</button>
                 </div>
                 
 				<!-- バリデーションエラー表示 -->                
@@ -86,83 +87,7 @@
             </form>                
 
 
-			<!-- 入力が完了・削除が完了した時のメッセージ -->
-	        <div th:if="${delcomplete}" th:text="${delcomplete}" class="alert alert-success mt-2" role="alert"></div>                
-	        <div th:if="${complete}" th:text="${complete}" class="alert alert-success mt-2" role="alert"></div>
+    </div>
 
-			<!-- 当月のデータが一件もない場合に表示 -->
-			<div class="alert alert-warning mt-2" role="alert" th:if="${#lists.isEmpty(list)}"><script>
-				var date = new Date();
-				var month = date.getMonth()+1;
-				document.write(month+"月の家計簿がまだ登録されていません")
-			</script></div>
-			
-
-			
-    	</div>
-    	
-    	<!--　一覧表示 -->
-		<div class="mt-5">
-			<!-- 当月のデータがある場合に場合に表示 -->
-    		<table class="table" th:unless="${#lists.isEmpty(list)}">
-				<thead>
-		            <tr>
-		            <th>年月日</th>
-		            <th>用途</th>
-		            <th>項目</th>
-		            <th>誰</th>
-		            <th>金額</th>
-		            <th>編集</th>
-		            <th>削除</th>
-
-		            </tr>
-	            </thead>
-			<tbody class="table-group-divider">
-			  		<tr th:each="obj : ${list}">
-						<td class="align-middle" th:text="${obj.date}"></td>
-						<td class="align-middle" th:text="${obj.place}"></td>
-						<td class="align-middle" th:text="${obj.category}"></td>
-						<td class="align-middle" th:text="${obj.person}"></td>
-						<td class="align-middle" th:text="${obj.price}+'円'"></td>
-
-						<!-- 編集ボタン -->
-						<td class="align-middle">
-							<form method = "POST" th:action="@{/home/edit/{id}(id=${obj.id})}">
-								<input type="submit" class="btn btn-secondary btn-sm" value="編集">
-							</form>
-						</td>
-
-						<!-- 削除ボタン -->
-						<td class="align-middle">
-							<form method = "POST" th:action="@{/home/delete}">
-								<input type="hidden" name = "id" th:value="${obj.id}">
-								<input type="submit" class="btn btn-danger btn-sm" value="削除">
-							</form>
-						</td>
-                    </tr>
-			</table>
-			
-			<!-- 当月のデータがある場合に場合に表示 -->
-			
-			<div class="mt-2 row d-flex justify-content-center">
-				<!-- 合計金額を表示 -->
-				<h4 th:unless="${#lists.isEmpty(list)}" class="col-auto">
-					<script>
-					var date = new Date();
-					var month = date.getMonth()+1;
-					document.write(month+"月の合計金額：[[${currentMonthTotal}]]円")
-					</script>			
-				</h4>
-
-				<!-- それぞれの人の合計金額を表示 -->
-				<div th:each="price : ${priceList}" class="col-auto">
-					<h4>[[ ${price.person} ]] の合計金額：[[ ${price.totalprice} ]]円</h4>
-				</div>
-				
-				<!-- 折半の場合，誰が誰にいくら払う必要があるかを表示 -->
-				
-			</div>
-			
-	</div>
 </body>
 </html>

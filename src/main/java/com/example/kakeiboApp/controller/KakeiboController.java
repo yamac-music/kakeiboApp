@@ -1,6 +1,7 @@
 package com.example.kakeiboApp.controller;
 
 import java.sql.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -97,4 +99,18 @@ public class KakeiboController {
 		return "redirect:/home";
 	}
 	
+	//データ1件取得して、フォームに表示
+	@PostMapping("/edit")
+	//PathVariable
+	public String edit(@PathVariable Integer id, Model model, KakeiboForm kakeiboForm) {
+		
+		Optional<Kakeibo> kakeibo = service.selectOneByID(id);
+		
+		model.addAttribute("title", "編集画面");
+		model.addAttribute("kakeibo", kakeibo);
+
+		System.out.println(kakeibo);
+		return "edit";
+	}
+
 }

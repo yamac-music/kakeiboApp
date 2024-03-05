@@ -13,13 +13,14 @@ public interface KakeiboRepository extends CrudRepository<Kakeibo, Integer> {
 	//当月のリスト表示
 	@Query("SELECT * FROM kakeibo "
 			+ "WHERE date BETWEEN DATE_TRUNC('month',now()) AND "
-			+ "DATE_TRUNC('month',now()) + '1 month' + '-1 day'")
+			+ "DATE_TRUNC('month',now()) + '1 month' + '-1 day'"
+			+ "ORDER BY date ASC;")
 	public Iterable<Kakeibo> findCurrentMonth();
 	
 	//当月の金額合計を表示
 	@Query("SELECT sum(price) FROM kakeibo "
 			+ "WHERE date BETWEEN DATE_TRUNC('month',now()) AND "
-			+ "DATE_TRUNC('month',now()) + '1 month' + '-1 day'")
+			+ "DATE_TRUNC('month',now()) + '1 month' + '-1 day' ")
 	public Integer calcTotalPriceCurrentMonth();
 
 	//翔太郎と更のそれぞれの当月金額合計を表示
