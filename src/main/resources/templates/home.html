@@ -127,9 +127,7 @@
 
 						<!-- 編集ボタン -->
 						<td class="align-middle">
-							<form method = "POST" th:action="@{/home/edit/{id}(id=${obj.id})}">
-								<input type="submit" class="btn btn-secondary btn-sm" value="編集">
-							</form>
+							<a class="btn btn-sm btn-secondary" th:href="@{home/{id}(id=${obj.id})}">編集</a>
 						</td>
 
 						<!-- 削除ボタン -->

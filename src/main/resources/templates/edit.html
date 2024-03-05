@@ -40,11 +40,11 @@
     	<div class="mt-5">
 		<form class="row gy-2 gx-3 align-items-center" 
     		th:method = "post"
-    		th:action = "@{/home/edit}"
+    		th:action = "@{/home/update}"
     		th:object = "${kakeiboForm}">
-    	
+    		<input th:if="${id}" type="hidden" th:field="*{id}">
 		    	<div class="col-auto">
-		            <input type="hidden" class="form-control" th:field="*{date}" max="9999-12-31" placeholder="日付">
+		            <input type="date" class="form-control" th:field="*{date}" max="9999-12-31" placeholder="日付">
 		        </div>
     	
                 <div class="col-auto">

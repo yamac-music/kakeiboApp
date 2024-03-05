@@ -100,17 +100,76 @@ public class KakeiboController {
 	}
 	
 	//データ1件取得して、フォームに表示
-	@PostMapping("/edit")
-	//PathVariable
+	@GetMapping("/{id}")
 	public String edit(@PathVariable Integer id, Model model, KakeiboForm kakeiboForm) {
 		
-		Optional<Kakeibo> kakeibo = service.selectOneByID(id);
+		//指定IDの家計簿を取得
+		Optional<Kakeibo> kakeiboOptional = service.selectOneByID(id);
 		
-		model.addAttribute("title", "編集画面");
-		model.addAttribute("kakeibo", kakeibo);
-
-		System.out.println(kakeibo);
+		//kakeiboFormにkakeiboの中身を入れる
+		Optional<KakeiboForm> kakeiboFormOptional = kakeiboOptional.map(t -> makeKakeiboForm(t));
+		//もしKakeiboFormが存在するなら中身を取り出す
+		if (kakeiboFormOptional.isPresent()) {
+			kakeiboForm = kakeiboFormOptional.get();
+		}
+		//更新用Model作成
+		makeUpdateModel(kakeiboForm, model);
 		return "edit";
+	}
+	//更新用Model作成
+	private void makeUpdateModel(KakeiboForm kakeiboForm, Model model) {
+		model.addAttribute("id", kakeiboForm.getId());
+		kakeiboForm.setNewKakeibo(false);
+		model.addAttribute("kakeiboForm", kakeiboForm);
+		model.addAttribute("title", "家計簿　編集用フォーム");
+	}
+	
+	//idをキーとしてデータ更新
+	@PostMapping("/update")
+	public String update(@Validated KakeiboForm kakeiboForm, BindingResult bindingResult, 
+						Model model, RedirectAttributes redirectAttributes) {
+		
+		//kakeiboにkakeiboFormの中身を入れる
+		Kakeibo kakeibo = makeKakeibo(kakeiboForm);
+		
+		//入力チェック
+		if (bindingResult.hasErrors()) {
+			makeUpdateModel(kakeiboForm, model);
+			return "edit";
+		}else {
+			service.updateKakeibo(kakeibo);
+			redirectAttributes.addFlashAttribute("complete", "更新が完了しました");
+			return "redirect:/home";
+		}
+	}
+
+	
+	//kakeiboFormをkakeiboに入れて返す
+	private Kakeibo makeKakeibo(KakeiboForm kakeiboForm) {
+		Kakeibo kakeibo = new Kakeibo();
+		kakeibo.setId(kakeiboForm.getId());
+		kakeibo.setDate(kakeiboForm.getDate());
+		kakeibo.setPlace(kakeiboForm.getPlace());
+		kakeibo.setCategory(kakeiboForm.getCategory());
+		kakeibo.setPerson(kakeiboForm.getPerson());
+		kakeibo.setPrice(kakeiboForm.getPrice());
+		
+		return kakeibo;
+	}
+	
+	//kakeiboをkakeiboFormに入れて返す
+	private KakeiboForm makeKakeiboForm(Kakeibo kakeibo) {
+		KakeiboForm kakeiboForm = new KakeiboForm();
+		
+		kakeiboForm.setId(kakeibo.getId());
+		kakeiboForm.setDate(kakeibo.getDate());
+		kakeiboForm.setPlace(kakeibo.getPlace());
+		kakeiboForm.setCategory(kakeibo.getCategory());
+		kakeiboForm.setPerson(kakeibo.getPerson());
+		kakeiboForm.setPrice(kakeibo.getPrice());
+		kakeiboForm.setNewKakeibo(false);
+		
+		return kakeiboForm;
 	}
 
 }
