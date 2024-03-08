@@ -138,7 +138,7 @@ public class KakeiboController {
 			return "edit";
 		}else {
 			service.updateKakeibo(kakeibo);
-			redirectAttributes.addFlashAttribute("complete", "更新が完了しました");
+			redirectAttributes.addFlashAttribute("complete", "編集が完了しました");
 			return "redirect:/home";
 		}
 	}

@@ -19,8 +19,7 @@ public class KakeiboForm {
 	private Integer id;
 	
 	//日付
-	@NotNull(message = "日付を入力してください")
-	//@DateTimeFormat(pattern = "yyyy/MM/dd")
+	@NotNull
 	private Date date;
 	
 	//場所

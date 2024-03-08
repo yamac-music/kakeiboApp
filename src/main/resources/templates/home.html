@@ -43,11 +43,11 @@
     		th:object = "${kakeiboForm}">
     	
 		    	<div class="col-auto">
-		            <input type="date" class="form-control" th:field="*{date}" max="9999-12-31">
+		            <input type="date" class="form-control" th:field="*{date}" max="9999-12-31" required>
 		        </div>
     	
                 <div class="col-auto">
-                    <input type="text" class="form-control" placeholder="用途" th:field="*{place}">
+                    <input type="text" class="form-control" placeholder="用途" th:field="*{place}" required>
                 </div>
 
                 <div class="col-auto">
@@ -71,7 +71,7 @@
                 
                 <div class="col-auto">
                     <div class="input-group">
-                        <input type="number" class="form-control" placeholder="金額" th:field="*{price}">
+                        <input type="number" class="form-control" placeholder="金額" th:field="*{price}" required>
                     </div>
                 </div>
                 

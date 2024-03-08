@@ -19,7 +19,7 @@ public class Kakeibo {
 	
 	//年月日
 	private Date date;
-	
+
 	//場所
 	private String place;
 	
