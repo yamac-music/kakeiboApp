@@ -1,5 +1,6 @@
 package com.example.kakeiboApp.service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,15 @@ public class KakeiboServiceImpl implements KakeiboService {
 		// TODO 自動生成されたメソッド・スタブ
 		Iterable<PriceTotal>  priceList = repository.calcPersonTotalPriceCurrentMonth(); 
 		return priceList;
+	}
+
+	@Override
+	public Iterable<Kakeibo> getKakeiboByYearMonth(int year, int month) {
+		// TODO 自動生成されたメソッド・スタブ
+		LocalDate startDate = LocalDate.of(year, month, 1);
+		LocalDate endDate = startDate.plusMonths(1).minusDays(1);
+
+		return repository.findByDateBetweenOrderByDateAsc(startDate, endDate);
 	}
 
 }

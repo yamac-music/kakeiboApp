@@ -1,5 +1,7 @@
 package com.example.kakeiboApp.repository;
 
+import java.time.LocalDate;
+
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -36,6 +38,9 @@ public interface KakeiboRepository extends CrudRepository<Kakeibo, Integer> {
 			+ "WHERE date BETWEEN DATE_TRUNC('month',now()) + '-1 month' AND "
 			+ "DATE_TRUNC('month',now()) + '-1 day'")
 	public Iterable<Kakeibo> findLastMonth();
+	
+	public Iterable<Kakeibo> findByDateBetweenOrderByDateAsc(LocalDate starDate, LocalDate endDate);
+
 	
 	
 }

@@ -104,7 +104,7 @@
     	<!--　一覧表示 -->
 		<div class="mt-5">
 			<!-- 当月のデータがある場合に場合に表示 -->
-    		<table class="table" th:unless="${#lists.isEmpty(list)}">
+    		<table class="table table-striped" th:unless="${#lists.isEmpty(list)}">
 				<thead>
 		            <tr>
 		            <th>年月日</th>
@@ -134,7 +134,8 @@
 						<td class="align-middle">
 							<form method = "POST" th:action="@{/home/delete}">
 								<input type="hidden" name = "id" th:value="${obj.id}">
-								<input type="submit" class="btn btn-danger btn-sm" value="削除">
+								<input type="submit" class="btn btn-danger btn-sm" value="削除" 
+								onclick="return confirm('削除しますか？');">
 							</form>
 						</td>
                     </tr>
@@ -153,13 +154,24 @@
 				</h4>
 
 				<!-- それぞれの人の合計金額を表示 -->
-				<div th:each="price : ${priceList}" class="col-auto">
+				<div th:unless="${#lists.isEmpty(list)}" th:each="price : ${priceList}" class="col-auto">
 					<h4>[[ ${price.person} ]] の合計金額：[[ ${price.totalprice} ]]円</h4>
 				</div>
 				
 				<!-- 折半の場合，誰が誰にいくら払う必要があるかを表示 -->
 				
 			</div>
+			
+			<div class="mt-2 d-flex justify-content-center">
+				<form th:action="@{/home}" method="get">
+		        <label for="year">年:</label>
+		        <input type="number" id="year" name="year" th:value="${year}">
+		        <label for="month">月:</label>
+		        <input type="number" id="month" name="month" th:value="${month}">
+		        <button type="submit">表示</button>
+		    	</form>
+		    </div>
+
 			
 	</div>
 </body>

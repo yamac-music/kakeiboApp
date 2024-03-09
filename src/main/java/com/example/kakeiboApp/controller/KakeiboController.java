@@ -1,6 +1,7 @@
 package com.example.kakeiboApp.controller;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,28 +38,63 @@ public class KakeiboController {
 	
 	//家計簿一覧表示
 	@GetMapping
-	public String showList(KakeiboForm kakeiboForm, Model model) {
+	public String showList(Model model,
+			@RequestParam(required = false) Integer year, 
+			@RequestParam(required = false) Integer month
+			) {
 		//新規登録
-		kakeiboForm.setNewKakeibo(true);
+		//kakeiboForm.setNewKakeibo(true);
 		
 		//一覧取得
-		Iterable<Kakeibo> list = service.selectAll();
+		//Iterable<Kakeibo> list = service.selectAll();
 		Integer currentMonthTotal = service.calcTotalPriceCurrentMonth();
 		
 		//priceList取得
 		Iterable<PriceTotal> priceList = service.calcPersonTotal();
 		
-		//折半の場合，誰が誰にどれだけお金を渡すか計算
-		
-		
+		//現在の年月を設定
+        LocalDate targetDate = getTargetDate(model, year, month);
+        int targetYear = targetDate.getYear();
+        int targetMonth = targetDate.getMonthValue();
+        
+        Iterable<Kakeibo> list = service.getKakeiboByYearMonth(targetYear, targetMonth);
+        //modelにListと年月の情報を
+		model.addAttribute("list", list);       
+        model.addAttribute("year", targetYear);
+        model.addAttribute("month", targetMonth);
+        
+        System.out.println(targetYear);
+        System.out.println(targetMonth);
+        
 		//Modelに格納
-		model.addAttribute("list", list);
-		model.addAttribute("title", "家計簿　登録用フォーム");
 		model.addAttribute("currentMonthTotal", currentMonthTotal);
 		model.addAttribute("priceList", priceList);
+		model.addAttribute("title", "家計簿　登録用フォーム");
 
 		return "home";
 	}
+	
+    private LocalDate getTargetDate(Model model, Integer year, Integer month) {
+        if (year != null && month != null && month >= 1 && month <= 12) {
+            return LocalDate.of(year, month, 1);
+        }
+        return getTargetDateFromModel(model);
+    }
+    
+    private LocalDate getTargetDateFromModel(Model model) {
+        int year = getIntParameter(model, "year", LocalDate.now().getYear());
+        int month = getIntParameter(model, "month", LocalDate.now().getMonthValue());
+        if (month < 1 || month > 12) {
+            return LocalDate.now();
+        }
+        return LocalDate.of(year, month, 1);
+    }
+
+    private int getIntParameter(Model model, String paramName, int defaultValue) {
+        String paramValue = model.asMap().containsKey(paramName) ? model.asMap().get(paramName).toString() : null;
+        return paramValue != null ? Integer.parseInt(paramValue) : defaultValue;
+    }
+	
 	
 	@PostMapping("/insert")
 	public String insert(@Validated @ModelAttribute KakeiboForm kakeiboForm, BindingResult bindingResult, Model model,
@@ -82,7 +118,7 @@ public class KakeiboController {
 		System.out.println("----------------");
 
 		if (bindingResult.hasErrors()) {
-			return showList(kakeiboForm, model);
+			return showList(model, );
 		}else {
 			service.insertKakeibo(kakeibo);
 			redirectAttributes.addFlashAttribute("complete", "入力が完了しました");

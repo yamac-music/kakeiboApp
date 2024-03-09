@@ -27,4 +27,6 @@ public interface KakeiboService {
 	
 	//翔太郎と更の当月priceを合計
 	Iterable<PriceTotal> calcPersonTotal();
+	
+	Iterable<Kakeibo> getKakeiboByYearMonth(int year, int month);
 }
