@@ -66,12 +66,14 @@
                     <select class="form-select" th:field="*{person}">
                         <option value="翔太郎" th:selected="${person == 翔太郎}">翔太郎</option>
                         <option value="更" th:selected="${person == 更}">更</option>
+                        <option value="test" th:selected="${person == test}">test</option>
+
                     </select>
                 </div>
                 
                 <div class="col-auto">
                     <div class="input-group">
-                        <input type="number" class="form-control" placeholder="金額" th:field="*{price}" required>
+                        <input type="number" class="form-control" placeholder="金額" th:field="*{price}">
                     </div>
                 </div>
                 
@@ -87,15 +89,20 @@
 
 
 			<!-- 入力が完了・削除が完了した時のメッセージ -->
-	        <div th:if="${delcomplete}" th:text="${delcomplete}" class="alert alert-success mt-2" role="alert"></div>                
-	        <div th:if="${complete}" th:text="${complete}" class="alert alert-success mt-2" role="alert"></div>
+	        <div th:if="${delcomplete}" class="alert alert-success mt-2 alert-dismissible fade show" role="alert">
+				[[ ${delcomplete} ]]
+ 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="閉じる"></button>
+			</div>                
+			
+	        <div th:if="${complete}" class="alert alert-success mt-2  alert-dismissible fade show" role="alert">
+				[[ ${complete} ]]
+ 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="閉じる"></button>
+			</div>
 
 			<!-- 当月のデータが一件もない場合に表示 -->
-			<div class="alert alert-warning mt-2" role="alert" th:if="${#lists.isEmpty(list)}"><script>
-				var date = new Date();
-				var month = date.getMonth()+1;
-				document.write(month+"月の家計簿がまだ登録されていません")
-			</script></div>
+			<div class="alert alert-warning mt-2" role="alert" th:if="${#lists.isEmpty(list)}">
+				[[${year}]]年[[${month}]]月のデータはまだ登録されていません。
+			</div>
 			
 
 			
@@ -146,16 +153,12 @@
 			<div class="mt-2 row d-flex justify-content-center">
 				<!-- 合計金額を表示 -->
 				<h4 th:unless="${#lists.isEmpty(list)}" class="col-auto">
-					<script>
-					var date = new Date();
-					var month = date.getMonth()+1;
-					document.write(month+"月の合計金額：[[${currentMonthTotal}]]円")
-					</script>			
+					[[${year}]]年[[${month}]]月の合計金額：[[${targetDateTotalPrice}]]円
 				</h4>
 
 				<!-- それぞれの人の合計金額を表示 -->
-				<div th:unless="${#lists.isEmpty(list)}" th:each="price : ${priceList}" class="col-auto">
-					<h4>[[ ${price.person} ]] の合計金額：[[ ${price.totalprice} ]]円</h4>
+				<div th:unless="${#lists.isEmpty(list)}" th:each="element : ${personTotalMap}" class="col-auto">
+					<h4>[[ ${element.key} ]]の合計金額：[[ ${element.value} ]]円</h4>
 				</div>
 				
 				<!-- 折半の場合，誰が誰にいくら払う必要があるかを表示 -->
@@ -163,15 +166,16 @@
 			</div>
 			
 			<div class="mt-2 d-flex justify-content-center">
-				<form th:action="@{/home}" method="get">
-		        <label for="year">年:</label>
-		        <input type="number" id="year" name="year" th:value="${year}">
-		        <label for="month">月:</label>
-		        <input type="number" id="month" name="month" th:value="${month}">
-		        <button type="submit">表示</button>
-		    	</form>
-		    </div>
-
+				<form th:action="@{/home}" method="get" class="row">
+					<input class="col-auto" type="number" id="year" name="year" th:value="${year}" min="0" max="9999">
+					<label class="form-label  col-auto" for="year">年</label>
+					
+					<input class="col-auto" type="number" id="month" name="month" th:value="${month}" min="1" max="12">
+					<label class="form-label col-auto" for="month">月</label>
+			
+					<button class=" btn btn-primary col-auto" type="submit">表示</button>
+				</form>
+			</div>
 			
 	</div>
 </body>

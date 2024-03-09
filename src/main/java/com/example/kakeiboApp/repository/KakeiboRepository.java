@@ -10,14 +10,9 @@ import com.example.kakeiboApp.entity.PriceTotal;
 
 //Kakeiboテーブル:RepositoryImpl
 public interface KakeiboRepository extends CrudRepository<Kakeibo, Integer> {
-	public Iterable<Kakeibo> findAllByOrderByDateDesc();
 	
-	//当月のリスト表示
-	@Query("SELECT * FROM kakeibo "
-			+ "WHERE date BETWEEN DATE_TRUNC('month',now()) AND "
-			+ "DATE_TRUNC('month',now()) + '1 month' + '-1 day'"
-			+ "ORDER BY date ASC;")
-	public Iterable<Kakeibo> findCurrentMonth();
+	//startdateからendDateまでを指定し、取得（ASC）
+	public Iterable<Kakeibo> findByDateBetweenOrderByDateAsc(LocalDate startDate, LocalDate endDate);
 	
 	//当月の金額合計を表示
 	@Query("SELECT sum(price) FROM kakeibo "
@@ -31,16 +26,6 @@ public interface KakeiboRepository extends CrudRepository<Kakeibo, Integer> {
 			+ "DATE_TRUNC('month',now()) + '1 month' + '-1 day'"
 			+ "GROUP BY person;")
 	public Iterable<PriceTotal> calcPersonTotalPriceCurrentMonth();
-
-
-	//先月のリスト取得
-	@Query("SELECT * FROM kakeibo "
-			+ "WHERE date BETWEEN DATE_TRUNC('month',now()) + '-1 month' AND "
-			+ "DATE_TRUNC('month',now()) + '-1 day'")
-	public Iterable<Kakeibo> findLastMonth();
-	
-	public Iterable<Kakeibo> findByDateBetweenOrderByDateAsc(LocalDate starDate, LocalDate endDate);
-
 	
 	
 }

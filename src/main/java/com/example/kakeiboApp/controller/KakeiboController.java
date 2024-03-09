@@ -2,6 +2,8 @@ package com.example.kakeiboApp.controller;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,17 +40,9 @@ public class KakeiboController {
 	
 	//家計簿一覧表示
 	@GetMapping
-	public String showList(Model model,
-			@RequestParam(required = false) Integer year, 
-			@RequestParam(required = false) Integer month
-			) {
-		//新規登録
-		//kakeiboForm.setNewKakeibo(true);
-		
-		//一覧取得
-		//Iterable<Kakeibo> list = service.selectAll();
-		Integer currentMonthTotal = service.calcTotalPriceCurrentMonth();
-		
+	public String showList(Model model,@RequestParam(required = false) Integer year, 
+			@RequestParam(required = false) Integer month){
+
 		//priceList取得
 		Iterable<PriceTotal> priceList = service.calcPersonTotal();
 		
@@ -57,17 +51,56 @@ public class KakeiboController {
         int targetYear = targetDate.getYear();
         int targetMonth = targetDate.getMonthValue();
         
+        //Iterable<Kakeibo> listに指定年月のデータを格納
         Iterable<Kakeibo> list = service.getKakeiboByYearMonth(targetYear, targetMonth);
-        //modelにListと年月の情報を
+        
+        //modelにListと年月の情報を格納
 		model.addAttribute("list", list);       
         model.addAttribute("year", targetYear);
         model.addAttribute("month", targetMonth);
+        //テスト表示（年月指定のフォームの値を表示）
+        System.out.println("指定年："+targetYear);
+        System.out.println("指定月："+targetMonth);
         
-        System.out.println(targetYear);
-        System.out.println(targetMonth);
-        
+        //指定した月の合計金額 targetDateTotalPriceを計算
+        int targetDateTotalPrice = 0;
+        for (Kakeibo kakeibo : list) {
+			targetDateTotalPrice += kakeibo.getPrice();
+		}
+        System.out.println("total："+targetDateTotalPrice);
+		model.addAttribute("targetDateTotalPrice", targetDateTotalPrice);
+		
+		//それぞれの金額を集計
+		//Mapを作成
+		Map<String, Integer> personTotalMap = new HashMap<>();
+		
+		//listをループ処理する
+		for (Kakeibo kakeibo : list) {
+			String personString = kakeibo.getPerson();
+			Integer priceInteger = kakeibo.getPrice();
+			
+			// personがMapに存在しない場合
+		    if (!personTotalMap.containsKey(personString)) {
+		    	personTotalMap.put(personString, priceInteger);
+		    }else {
+		    // personがMapに存在する場合
+		    Integer totalAmount = personTotalMap.get(personString);
+		    personTotalMap.put(personString, totalAmount + priceInteger);
+		    }
+		}
+		
+		//MapをModelに格納
+		model.addAttribute("personTotalMap",personTotalMap);
+		
+	    // Mapの内容を出力
+	    for (Map.Entry<String, Integer> entry : personTotalMap.entrySet()) {
+	      String person = entry.getKey();
+	      Integer totalAmount = entry.getValue();
+	      System.out.println(person + "の合計金額：" + totalAmount);
+	    }
+	    System.out.println("-------");
+	    
 		//Modelに格納
-		model.addAttribute("currentMonthTotal", currentMonthTotal);
 		model.addAttribute("priceList", priceList);
 		model.addAttribute("title", "家計簿　登録用フォーム");
 
@@ -75,9 +108,11 @@ public class KakeiboController {
 	}
 	
     private LocalDate getTargetDate(Model model, Integer year, Integer month) {
+    	//year、monthがnull、monthが1~12月出ない場合、当月を返す
         if (year != null && month != null && month >= 1 && month <= 12) {
             return LocalDate.of(year, month, 1);
         }
+        //そうでないなら、modelから取ってきた値を返す
         return getTargetDateFromModel(model);
     }
     
@@ -97,7 +132,12 @@ public class KakeiboController {
 	
 	
 	@PostMapping("/insert")
-	public String insert(@Validated @ModelAttribute KakeiboForm kakeiboForm, BindingResult bindingResult, Model model,
+	public String insert(
+			@RequestParam(required = false) Integer year, 
+			@RequestParam(required = false) Integer month, 
+			@Validated @ModelAttribute KakeiboForm kakeiboForm, 
+			BindingResult bindingResult, 
+			Model model,
 			RedirectAttributes redirectAttributes) {
 		
 		Kakeibo kakeibo = new Kakeibo();
@@ -118,7 +158,7 @@ public class KakeiboController {
 		System.out.println("----------------");
 
 		if (bindingResult.hasErrors()) {
-			return showList(model, );
+			return showList(model, year, month);
 		}else {
 			service.insertKakeibo(kakeibo);
 			redirectAttributes.addFlashAttribute("complete", "入力が完了しました");

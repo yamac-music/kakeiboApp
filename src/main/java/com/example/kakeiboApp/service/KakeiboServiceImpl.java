@@ -18,11 +18,14 @@ public class KakeiboServiceImpl implements KakeiboService {
 	KakeiboRepository repository;
 
 	@Override
-	public Iterable<Kakeibo> selectAll() {
+	public Iterable<Kakeibo> getKakeiboByYearMonth(int year, int month) {
 		// TODO 自動生成されたメソッド・スタブ
-		return repository.findCurrentMonth();
-	}
+		LocalDate startDate = LocalDate.of(year, month, 1);
+		LocalDate endDate = startDate.plusMonths(1).minusDays(1);
 
+		return repository.findByDateBetweenOrderByDateAsc(startDate, endDate);
+	}
+	
 	@Override
 	public Optional<Kakeibo> selectOneByID(Integer id) {
 		// TODO 自動生成されたメソッド・スタブ
@@ -62,13 +65,5 @@ public class KakeiboServiceImpl implements KakeiboService {
 		return priceList;
 	}
 
-	@Override
-	public Iterable<Kakeibo> getKakeiboByYearMonth(int year, int month) {
-		// TODO 自動生成されたメソッド・スタブ
-		LocalDate startDate = LocalDate.of(year, month, 1);
-		LocalDate endDate = startDate.plusMonths(1).minusDays(1);
-
-		return repository.findByDateBetweenOrderByDateAsc(startDate, endDate);
-	}
 
 }
