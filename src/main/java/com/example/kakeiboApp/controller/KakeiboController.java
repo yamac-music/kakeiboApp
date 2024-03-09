@@ -25,7 +25,7 @@ import com.example.kakeiboApp.form.KakeiboForm;
 import com.example.kakeiboApp.service.KakeiboService;
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping("/")
 public class KakeiboController {
 	//DI対象
 	@Autowired
@@ -162,7 +162,7 @@ public class KakeiboController {
 		}else {
 			service.insertKakeibo(kakeibo);
 			redirectAttributes.addFlashAttribute("complete", "入力が完了しました");
-			return "redirect:/home";
+			return "redirect:/";
 		}
 	}
 	
@@ -172,7 +172,7 @@ public class KakeiboController {
 		//1件削除
 		service.deleteOneByID(Integer.parseInt(id));
 		redirectAttributes.addFlashAttribute("delcomplete", "削除が完了しました");
-		return "redirect:/home";
+		return "redirect:/";
 	}
 	
 	//データ1件取得して、フォームに表示
@@ -215,7 +215,7 @@ public class KakeiboController {
 		}else {
 			service.updateKakeibo(kakeibo);
 			redirectAttributes.addFlashAttribute("complete", "編集が完了しました");
-			return "redirect:/home";
+			return "redirect:/";
 		}
 	}
 
@@ -247,5 +247,12 @@ public class KakeiboController {
 		
 		return kakeiboForm;
 	}
-
+	
+	@RequestMapping("/analyse")
+	public String analyse() {
+		return "analyse";
+	}
+	
 }
+
+

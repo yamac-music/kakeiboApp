@@ -23,9 +23,8 @@
 	 <!--ここからヘッダー-->
     <header class="d-flex justify-content-center py-3 text-bg-secondary">
         <ul class="nav nav-pills">
-            <li class="nav-item"><a href="/home" class="nav-link text-white">ホーム</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-white">月別比較</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-white">分析</a></li>
+            <li class="nav-item"><a href="/" class="nav-link text-white">ホーム</a></li>
+            <li class="nav-item"><a href="/analyse" class="nav-link text-white">分析</a></li>
             <li class="nav-item"><a href="#" class="nav-link text-white">概要</a></li>
         </ul>
     </header>
@@ -39,7 +38,7 @@
     	<div class="mt-5">
 		<form class="row gy-2 gx-3 align-items-center" 
     		th:method = "post"
-    		th:action = "@{/home/insert}"
+    		th:action = "@{/insert}"
     		th:object = "${kakeiboForm}">
     	
 		    	<div class="col-auto">
@@ -134,12 +133,12 @@
 
 						<!-- 編集ボタン -->
 						<td class="align-middle">
-							<a class="btn btn-sm btn-secondary" th:href="@{home/{id}(id=${obj.id})}">編集</a>
+							<a class="btn btn-sm btn-secondary" th:href="@{/{id}(id=${obj.id})}">編集</a>
 						</td>
 
 						<!-- 削除ボタン -->
 						<td class="align-middle">
-							<form method = "POST" th:action="@{/home/delete}">
+							<form method = "POST" th:action="@{/delete}">
 								<input type="hidden" name = "id" th:value="${obj.id}">
 								<input type="submit" class="btn btn-danger btn-sm" value="削除" 
 								onclick="return confirm('削除しますか？');">
@@ -166,11 +165,11 @@
 			</div>
 			
 			<div class="mt-2 d-flex justify-content-center">
-				<form th:action="@{/home}" method="get" class="row">
-					<input class="col-auto" type="number" id="year" name="year" th:value="${year}" min="0" max="9999">
+				<form th:action="@{/}" method="get" class="row">
+					<input class="col-auto border rounded" type="number" id="year" name="year" th:value="${year}" min="0" max="9999">
 					<label class="form-label  col-auto" for="year">年</label>
 					
-					<input class="col-auto" type="number" id="month" name="month" th:value="${month}" min="1" max="12">
+					<input class="col-auto border rounded" type="number" id="month" name="month" th:value="${month}" min="1" max="12">
 					<label class="form-label col-auto" for="month">月</label>
 			
 					<button class=" btn btn-primary col-auto" type="submit">表示</button>

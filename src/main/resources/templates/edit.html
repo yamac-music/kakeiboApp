@@ -23,9 +23,8 @@
 	 <!--ここからヘッダー-->
     <header class="d-flex justify-content-center py-3 text-bg-secondary">
         <ul class="nav nav-pills">
-            <li class="nav-item"><a href="/home" class="nav-link text-white">ホーム</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-white">月別比較</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-white">分析</a></li>
+            <li class="nav-item"><a th:href="@{/}" class="nav-link text-white">ホーム</th></a></li>
+            <li class="nav-item"><a th:href="@{/analyse}" class="nav-link text-white">分析</a></li>
             <li class="nav-item"><a href="#" class="nav-link text-white">概要</a></li>
         </ul>
     </header>
@@ -40,7 +39,7 @@
     	<div class="mt-5">
 		<form class="row gy-2 gx-3 align-items-center" 
     		th:method = "post"
-    		th:action = "@{/home/update}"
+    		th:action = "@{/update}"
     		th:object = "${kakeiboForm}">
     		<input th:if="${id}" type="hidden" th:field="*{id}" >
 		    	<div class="col-auto">
