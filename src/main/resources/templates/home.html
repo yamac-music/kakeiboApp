@@ -102,13 +102,24 @@
 			<div class="alert alert-warning mt-2" role="alert" th:if="${#lists.isEmpty(list)}">
 				[[${year}]]年[[${month}]]月のデータはまだ登録されていません。
 			</div>
-			
-
-			
     	</div>
     	
+			
+			<!-- 任意の年月を表示するためのフォーム -->
+			<div class="mt-3 d-flex justify-content-center">
+				<form th:action="@{/}" method="get" class="row">
+					<input class="col-auto border rounded" type="number" id="year" name="year" th:value="${year}" min="0" max="9999">
+					<label class="form-label  col-auto" for="year">年</label>
+					
+					<input class="col-auto border rounded" type="number" id="month" name="month" th:value="${month}" min="1" max="12">
+					<label class="form-label col-auto" for="month">月</label>
+			
+					<button class=" btn btn-primary col-auto" type="submit">表示</button>
+				</form>
+			</div>
+    	
     	<!--　一覧表示 -->
-		<div class="mt-5">
+		<div class="mt-3">
 			<!-- 当月のデータがある場合に場合に表示 -->
     		<table class="table table-striped" th:unless="${#lists.isEmpty(list)}">
 				<thead>
@@ -162,20 +173,17 @@
 				
 				<!-- 折半の場合，誰が誰にいくら払う必要があるかを表示 -->
 				
+				<div th:unless="${#lists.isEmpty(list)}" th:each="entry : ${differencesMap}" class="col-auto">
+				    <span th:if="${entry.value < 0}">
+				        <h4><span th:text="${entry.key}"></span>が
+				        	<span th:each="payee : ${differencesMap}">
+				            <span th:if="${payee.value > 0}" th:text="|${payee.key}に${-entry.value}円払う必要があります|"></span>
+				        </h4>
+				        </span>
+				    </span>
+				</div>
+				
 			</div>
-			
-			<div class="mt-2 d-flex justify-content-center">
-				<form th:action="@{/}" method="get" class="row">
-					<input class="col-auto border rounded" type="number" id="year" name="year" th:value="${year}" min="0" max="9999">
-					<label class="form-label  col-auto" for="year">年</label>
-					
-					<input class="col-auto border rounded" type="number" id="month" name="month" th:value="${month}" min="1" max="12">
-					<label class="form-label col-auto" for="month">月</label>
-			
-					<button class=" btn btn-primary col-auto" type="submit">表示</button>
-				</form>
-			</div>
-			
 	</div>
 </body>
 </html>
