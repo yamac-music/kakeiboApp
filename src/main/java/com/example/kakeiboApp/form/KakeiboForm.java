@@ -40,6 +40,5 @@ public class KakeiboForm {
 
 	
 	/** 「登録」or「変更」判定用 */
-	private Boolean newKakeibo;
-	
+	private Boolean newKakeibo;	
 }

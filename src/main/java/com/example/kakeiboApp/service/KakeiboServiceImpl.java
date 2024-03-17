@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.kakeiboApp.entity.Kakeibo;
-import com.example.kakeiboApp.entity.PriceTotal;
 import com.example.kakeiboApp.repository.KakeiboRepository;
 
 @Service
@@ -50,20 +49,5 @@ public class KakeiboServiceImpl implements KakeiboService {
 		//一旦は物理削除を実装
 		repository.deleteById(id);
 	}
-
-	@Override
-	public Integer calcTotalPriceCurrentMonth() {
-		// TODO 自動生成されたメソッド・スタブ
-		return repository.calcTotalPriceCurrentMonth();
-
-	}
-
-	@Override
-	public Iterable<PriceTotal> calcPersonTotal() {
-		// TODO 自動生成されたメソッド・スタブ
-		Iterable<PriceTotal>  priceList = repository.calcPersonTotalPriceCurrentMonth(); 
-		return priceList;
-	}
-
 
 }

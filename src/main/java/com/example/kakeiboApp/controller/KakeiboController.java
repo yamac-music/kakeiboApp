@@ -3,7 +3,7 @@ package com.example.kakeiboApp.controller;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.kakeiboApp.entity.Kakeibo;
-import com.example.kakeiboApp.entity.PriceTotal;
 import com.example.kakeiboApp.form.KakeiboForm;
+import com.example.kakeiboApp.repository.KakeiboRepository;
 import com.example.kakeiboApp.service.KakeiboService;
 
 @Controller
@@ -31,6 +31,9 @@ public class KakeiboController {
 	//DI対象
 	@Autowired
 	KakeiboService service;
+	
+	@Autowired
+	KakeiboRepository repository;
 	
 	//form-backing beanの初期化
 	@ModelAttribute
@@ -43,9 +46,6 @@ public class KakeiboController {
 	@GetMapping
 	public String showList(Model model,@RequestParam(required = false) Integer year, 
 			@RequestParam(required = false) Integer month){
-
-		//priceList取得
-		Iterable<PriceTotal> priceList = service.calcPersonTotal();
 		
 		//現在の年月を設定
         LocalDate targetDate = getTargetDate(model, year, month);
@@ -59,9 +59,6 @@ public class KakeiboController {
 		model.addAttribute("list", list);       
         model.addAttribute("year", targetYear);
         model.addAttribute("month", targetMonth);
-        //テスト表示（年月指定のフォームの値を表示）
-        //System.out.println("指定年："+targetYear);
-        //System.out.println("指定月："+targetMonth);
         
         //指定した月の合計金額 targetDateTotalPriceを計算
         int targetDateTotalPrice = 0;
@@ -92,17 +89,8 @@ public class KakeiboController {
 		
 		//MapをModelに格納
 		model.addAttribute("personTotalMap",personTotalMap);
-		
-	    // Mapの内容をテストで出力
-	    //for (Map.Entry<String, Integer> entry : personTotalMap.entrySet()) {
-	    //  String person = entry.getKey();
-	    //  int totalAmount = entry.getValue();
-	    //  System.out.println(person + "の合計金額：" + totalAmount);
-	    //}
-	    //System.out.println("-------");
 	    
 		//Modelに格納
-		model.addAttribute("priceList", priceList);
 		model.addAttribute("title", "家計簿　登録用フォーム");
 		
 		//支払額を計算した結果のmapをModelに格納
@@ -111,8 +99,10 @@ public class KakeiboController {
 	    System.out.println("-------");
 		System.out.println("personTotalMap: "+personTotalMap);
 		System.out.println("Total"+targetDateTotalPrice);
-		System.out.println(differencesMap);
 		
+		//人の一覧を取得する
+		List<String> people = repository.findDistinctPeople();
+		model.addAttribute("people", people);
 		return "home";
 	}
 	
@@ -141,43 +131,17 @@ public class KakeiboController {
 	
     
     public static Map<String, Integer> calculateExpenseDifference(Map<String, Integer> payments, int totalAmount) {
-        // 差額を格納するMapを初期化
         Map<String, Integer> differences = new HashMap<>();
-
-        // payments Mapのサイズ(人数)を取得
         int numPeople = payments.size();
+        int averagePayment = totalAmount / numPeople;
 
-        // 人数が2人でない場合は例外をスロー
-        if (numPeople != 2) {
-            throw new IllegalArgumentException("This method only works for two people.");
+        // 各人の支払い額と平均支払い額の差を計算
+        for (Map.Entry<String, Integer> entry : payments.entrySet()) {
+            String person = entry.getKey();
+            int payment = entry.getValue();
+            differences.put(person, payment - averagePayment);
         }
 
-        // payments Mapのエントリーセットをイテレータに変換
-        Iterator<Map.Entry<String, Integer>> iterator = payments.entrySet().iterator();
-
-        // 最初のエントリー(人とその支払い額)を取得
-        Map.Entry<String, Integer> entry1 = iterator.next();
-        // 2番目のエントリー(人とその支払い額)を取得
-        Map.Entry<String, Integer> entry2 = iterator.next();
-
-        // 最初の人の名前を取得
-        String person1 = entry1.getKey();
-        // 最初の人の支払い額を取得
-        int payment1 = entry1.getValue();
-
-        // 2番目の人の名前を取得
-        String person2 = entry2.getKey();
-        // 2番目の人の支払い額を取得
-        int payment2 = entry2.getValue();
-
-        // 2人の支払い額の差を計算
-        int totalDifference = payment1 - payment2;
-
-        // 差額を2で割り、片方には正の値、もう片方には負の値を割り当てる
-        differences.put(person1, totalDifference / 2);
-        differences.put(person2, -totalDifference / 2);
-
-        // 調整後の差額を返す
         return differences;
     }
     

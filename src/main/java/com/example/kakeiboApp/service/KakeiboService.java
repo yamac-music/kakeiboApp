@@ -3,7 +3,6 @@ package com.example.kakeiboApp.service;
 import java.util.Optional;
 
 import com.example.kakeiboApp.entity.Kakeibo;
-import com.example.kakeiboApp.entity.PriceTotal;
 
 //Kakeiboサービス処理
 public interface KakeiboService {
@@ -21,12 +20,5 @@ public interface KakeiboService {
 	
 	//家計簿を削除
 	void deleteOneByID(Integer id);
-	
-	//当月のpriceを合計
-	Integer calcTotalPriceCurrentMonth();
-	
-	//翔太郎と更の当月priceを合計
-	Iterable<PriceTotal> calcPersonTotal();
-	
 
 }
