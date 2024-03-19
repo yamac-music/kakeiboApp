@@ -96,9 +96,6 @@ public class KakeiboController {
 		//支払額を計算した結果のmapをModelに格納
 		Map<String, Integer> differencesMap = calculateExpenseDifference(personTotalMap, targetDateTotalPrice);
 		model.addAttribute("differencesMap", differencesMap);
-	    System.out.println("-------");
-		System.out.println("personTotalMap: "+personTotalMap);
-		System.out.println("Total"+targetDateTotalPrice);
 		
 		//人の一覧を取得する
 		List<String> people = repository.findDistinctPeople();

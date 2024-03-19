@@ -1,0 +1,11 @@
+/* styles.css */
+
+body {
+	font-family: "Hiragino Kaku Gothic ProN",
+	"Hiragino Sans", "Noto Sans", Meiryo, sans-serif;
+}
+
+    
+.container {
+    max-width: 800px;
+}
