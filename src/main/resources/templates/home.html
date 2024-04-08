@@ -1,220 +1,229 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>家計簿</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link th:href="@{/css/styles.css}" rel="stylesheet" type="text/css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>家計簿</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+	<link th:href="@{/css/styles.css}" rel="stylesheet" type="text/css">
 
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
-        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous"></script></head>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+		integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+		crossorigin="anonymous"></script>
+</head>
+
 <body>
+	<!--ここからヘッダー-->
+	<header class="d-flex justify-content-center py-2 text-bg-secondary">
+		<ul class="nav nav-pills">
+			<li class="nav-item"><a href="/" class="nav-link text-white"><i class="bi bi-house"></i> ホーム</a></li>
+			<li class="nav-item"><a href="home/analyse" class="nav-link text-white"><i class="bi bi-bar-chart"></i> 分析</a></li>
+			<li class="nav-item"><a href="#" class="nav-link text-white"><i class="bi bi-info-circle"></i> 概要</a></li>
+			<li class="nav-item"><a href="/logout" class="nav-link text-white"><i class="bi bi-box-arrow-right"></i> ログアウト</a></li>
+		</ul>
+	</header>
+	<!--ここまでヘッダー-->
 
-	 <!--ここからヘッダー-->
-    <header class="d-flex justify-content-center py-3 text-bg-secondary">
-        <ul class="nav nav-pills">
-            <li class="nav-item"><a href="/" class="nav-link text-white">ホーム</a></li>
-            <li class="nav-item"><a href="/analyse" class="nav-link text-white">分析</a></li>
-            <li class="nav-item"><a href="#" class="nav-link text-white">概要</a></li>
-        </ul>
-    </header>
-    <!--ここまでヘッダー-->
-    
-    <div class = "container">   
-    	<h3 class="mt-5" th:text = "${title}"></h3>
-    	<p th:if="${complete}" th:text="${complate}"></p>
-    	
-    	
-    	
-    	<!-- Form -->
-    	<div class="mt-5">
-		<form class="row g-3" 
-    		th:method = "post"
-    		th:action = "@{/insert}"
-    		th:object = "${kakeiboForm}">
-    	
-    	    <!-- 日付 -->
-	        <div class="col-md-3">
-	            <label for="date" class="form-label">日付</label>
-	            <input type="date" class="form-control" id="date" th:field="*{date}" max="9999-12-31" required>
-	            <div class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
-	        </div>
-    	
-	        <!-- 用途 -->
-	        <div class="col-md-3">
-	            <label for="place" class="form-label">用途</label>
-	            <input type="text" class="form-control" id="place" placeholder="用途" th:field="*{place}" required>
-	            <div class="text-danger" th:if="${#fields.hasErrors('place')}" th:errors="*{place}"></div>
-	        </div>
+	<div class="container">
+		<h2 class="mt-3" th:text="${title}"></h2>
+		<p th:if="${complete}" th:text="${complate}"></p>
+		<p th:if="${delcomplete}" th:text="${delcomplete}"></p>
 
-	         <!-- カテゴリ -->
-	        <div class="col-md-3">
-	            <label for="category" class="form-label">カテゴリ</label>
-	            <select class="form-select" id="category" th:field="*{category}" required>
-	                <option value="食費">食費</option>
-	                <option value="日用品">日用品</option>
-	                <option value="交通費">交通費</option>
-	                <option value="住居">住居</option>
-	                <option value="水道光熱費">水道光熱費</option>
-	                <option value="その他支出">その他支出</option>
-	                <option value="収入">収入</option>
-	            </select>
-	        </div>
-	        
-	        <!-- 名前 -->
-	        <div class="col-md-3">
-	            <label for="person" class="form-label">名前</label>
-	            <input class="form-control" list="people" id="person" th:field="*{person}" placeholder="名前を選択 OR 入力" required>
-	            <datalist id="people">
-	                <option th:each="p : ${people}" th:value="${p}"></option>
-	            </datalist>
-	        </div>            
-	        
-	        <!-- 金額 -->
-	        <div class="col-md-3">
-	            <label for="price" class="form-label">金額</label>
-	            <div class="input-group">
-	                <span class="input-group-text">¥</span>
-	                <input type="number" class="form-control" id="price" placeholder="金額" th:field="*{price}" required>
-	            </div>
-	            <div class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
-	        </div>
-                
-	        <!-- 登録ボタン -->
-	        <div class="col-12">
-	            <button type="submit" class="btn btn-primary">登録</button>
-	        </div>
-                
-			<!-- バリデーションエラー表示 -->                
-	        <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-danger"></div>
-	        <div th:if="${#fields.hasErrors('place')}" th:errors="*{place}" class="text-danger"></div>
-	        <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger"></div>    
-        </form>                
+		<!-- Form -->
+		<div class="mt-3">
+			<form th:method="post" th:action="@{/insert}" th:object="${kakeiboForm}" class="row">
+
+				<!-- 日付 -->
+				<div class="form-group col-sm-6">
+					<label for="date" class="col-form-label"><i class="bi bi-calendar"></i> 日付</label>
+					<input type="date" class="form-control" id="date" th:field="*{date}" max="9999-12-31" required>
+				</div>
+
+				<!-- 用途 -->
+				<div class="form-group col-sm-6">
+					<label for="place" class="col-form-label"><i class="bi bi-tag"></i> 用途</label>
+					<input type="text" class="form-control" id="place" th:field="*{place}" placeholder="用途を入力" required>
+				</div>
+
+				<!-- カテゴリ -->
+				<div class="form-group col-sm-6">
+					<label for="category" class="col-form-label"><i class="bi bi-list-ul"></i> 項目</label>
+					<select class="form-select" id="category" th:field="*{category}">
+						<option value="食費" th:selected="${category == '食費'}">食費</option>
+						<option value="日用品" th:selected="${category == '日用品'}">日用品</option>
+						<option value="交通費" th:selected="${category == '交通費'}">交通費</option>
+						<option value="住居" th:selected="${category == '住居'}">住居</option>
+						<option value="水道光熱費" th:selected="${category == '水道光熱費'}">水道光熱費</option>
+						<option value="その他支出" th:selected="${category == 'その他支出'}">その他支出</option>
+						<option value="収入" th:selected="${category == '収入'}">収入</option>
+					</select>
+				</div>
+
+				<!-- 名前 -->
+				<div class="form-group col-sm-6">
+					<label for="person" class="col-form-label"><i class="bi bi-person"></i> 名前</label>
+					<input class="form-control" list="people" id="person" th:field="*{person}" placeholder="名前を選択 OR 入力"
+						required>
+					<datalist id="people">
+						<option th:each="p : ${people}" th:value="${p}"></option>
+					</datalist>
+				</div>
+
+				<!-- 金額 -->
+				<div class="form-group col-sm-6">
+					<label for="price" class="col-form-label"><i class="bi bi-cash"></i> 金額</label>
+					<div class="input-group">
+						<input type="number" class="form-control" id="price" th:field="*{price}" placeholder="金額を入力">
+						<span class="input-group-text">円</span>
+					</div>
+				</div>
+
+				<!-- 登録ボタン -->
+				<div class="form-group col-sm-6">
+					<label class="col-form-label" for="submit-button">&nbsp;</label>
+					<button type="submit" id="submit-button" class="btn btn-primary w-100"><i
+							class="bi bi-plus-circle"></i> 登録</button>
+				</div>
+
+				<!-- バリデーションエラー表示 -->
+				<div th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-danger col-sm-6"></div>
+				<div th:if="${#fields.hasErrors('place')}" th:errors="*{place}" class="text-danger col-sm-6"></div>
+				<div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger col-sm-6"></div>
+			</form>
 
 
 			<!-- 入力が完了・削除が完了した時のメッセージ -->
-	        <div th:if="${delcomplete}" class="alert alert-success mt-2 alert-dismissible fade show" role="alert">
+			<div th:if="${delcomplete}" class="alert alert-success mt-2 alert-dismissible fade show" role="alert">
 				[[ ${delcomplete} ]]
- 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="閉じる"></button>
-			</div>                
-			
-	        <div th:if="${complete}" class="alert alert-success mt-2  alert-dismissible fade show" role="alert">
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="閉じる"></button>
+			</div>
+
+			<div th:if="${complete}" class="alert alert-success mt-2  alert-dismissible fade show" role="alert">
 				[[ ${complete} ]]
- 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="閉じる"></button>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="閉じる"></button>
 			</div>
 
 			<!-- 当月のデータが一件もない場合に表示 -->
-			<div class="alert alert-warning mt-2" role="alert" th:if="${#lists.isEmpty(list)}">
+			<div class="alert alert-warning mt-3" role="alert" th:if="${#lists.isEmpty(list)}">
 				[[${year}]]年[[${month}]]月のデータはまだ登録されていません。
 			</div>
-    	</div>
-    	
-			
-			<!-- 任意の年月を表示するためのフォーム -->
-			<div class="mt-3 d-flex justify-content-center">
-				<form th:action="@{/}" method="get" class="row">
-					<input class="col-auto border rounded" type="number" id="year" name="year" th:value="${year}" min="0" max="9999">
-					<label class="form-label  col-auto" for="year">年</label>
-					
-					<input class="col-auto border rounded" type="number" id="month" name="month" th:value="${month}" min="1" max="12">
-					<label class="form-label col-auto" for="month">月</label>
-			
-					<button class=" btn btn-primary col-auto" type="submit">表示</button>
-				</form>
-			</div>
-    	
-    	<!--　一覧表示 -->
-		<div class="mt-3">
+		</div>
+
+
+		<!-- 任意の年月を表示するためのフォーム -->
+		<div class="mt-5 d-flex justify-content-center">
+			<form th:action="@{/}" method="get" class="row">
+				<input class="col-auto border rounded" type="number" id="year" name="year" th:value="${year}" min="0"
+					max="9999">
+				<label class="form-label  col-auto" for="year">年</label>
+
+				<input class="col-auto border rounded" type="number" id="month" name="month" th:value="${month}" min="1"
+					max="12">
+				<label class="form-label col-auto" for="month">月</label>
+
+				<button class=" btn btn-primary col-auto" type="submit">表示</button>
+			</form>
+		</div>
+
+		<!--　一覧表示 -->
+		<div class="mt-2">
 			<!-- 当月のデータがある場合に場合に表示 -->
 			<div style="max-height: 500px; overflow-y: auto;">
-    		<table class="table table-striped " th:unless="${#lists.isEmpty(list)}">
-				<thead>
-		            <tr style="position: sticky; top: 0; background-color: white;">
-		            <th>年月日</th>
-		            <th>用途</th>
-		            <th>項目</th>
-		            <th>誰</th>
-		            <th>金額</th>
-		            <th>編集</th>
-		            <th>削除</th>
+				<table class="table table-striped " th:unless="${#lists.isEmpty(list)}">
+					<thead>
+						<tr style="position: sticky; top: 0; background-color: white;">
+							<th>年月日</th>
+							<th>用途</th>
+							<th>項目</th>
+							<th>誰</th>
+							<th>金額</th>
+							<th>編集</th>
+							<th>削除</th>
 
-		            </tr>
-	            </thead>
-			<tbody class="table-group-divider">
-			  		<tr th:each="obj : ${list}">
-						<td class="align-middle" th:text="${obj.date}"></td>
-						<td class="align-middle" th:text="${obj.place}"></td>
-						<td class="align-middle" th:text="${obj.category}"></td>
-						<td class="align-middle" th:text="${obj.person}"></td>
-						<td class="align-middle" th:text="${obj.price}+'円'"></td>
+						</tr>
+					</thead>
+					<tbody class="table-group-divider">
+						<tr th:each="obj : ${list}">
+							<td class="align-middle" th:text="${obj.date}"></td>
+							<td class="align-middle" th:text="${obj.place}"></td>
+							<td class="align-middle" th:text="${obj.category}"></td>
+							<td class="align-middle" th:text="${obj.person}"></td>
+							<td class="align-middle" th:text="${obj.price}+'円'"></td>
 
-						<!-- 編集ボタン -->
-						<td class="align-middle">
-							<a class="btn btn-sm btn-secondary" th:href="@{/{id}(id=${obj.id})}">編集</a>
-						</td>
+							<!-- 編集ボタン -->
+							<td class="align-middle">
+								<a class="btn btn-sm btn-secondary" th:href="@{/{id}(id=${obj.id})}">編集</a>
+							</td>
 
-						<!-- 削除ボタン -->
-						<td class="align-middle">
-							<form method = "POST" th:action="@{/delete}">
-								<input type="hidden" name = "id" th:value="${obj.id}">
-								<input type="submit" class="btn btn-danger btn-sm" value="削除" 
-								onclick="return confirm('削除しますか？');">
-							</form>
-						</td>
-                    </tr>
-			</table>
+							<!-- 削除ボタン -->
+							<td class="align-middle">
+								<form method="POST" th:action="@{/delete}">
+									<input type="hidden" name="id" th:value="${obj.id}">
+									<input type="submit" class="btn btn-danger btn-sm" value="削除"
+										onclick="return confirm('削除しますか？');">
+								</form>
+							</td>
+						</tr>
+				</table>
 			</div>
-			
+
 			<!-- 当月のデータがある場合に場合に表示 -->
-				<div class="row mt-3">
-				    <!-- 合計金額を表示 -->
-				    <div class="col-md-6 col-lg-6 mb-3" th:unless="${#lists.isEmpty(list)}">
-				        <div class="card">
-				            <div class="card-body">
-				                <h5 class="card-title fw-bold"><i class="bi bi-cash-stack"></i>[[${year}]]年[[${month}]]月</h5>
-				                <p class="card-text">合計金額：[[${targetDateTotalPrice}]]円</p>
-				            </div>
-				        </div>
-				    </div>
-				
-				    <!-- それぞれの人の合計金額を表示 -->
-				    <div class="col-md-6 col-lg-6 mb-3" th:unless="${#lists.isEmpty(list)}" th:each="element : ${personTotalMap}">
-				        <div class="card">
-				            <div class="card-body">
-				                <h5 class="card-title fw-bold"><i class="bi bi-person-fill"></i> [[${element.key}]]</h5>
-				                <p class="card-text">合計金額：[[${element.value}]]円</p>
-				            </div>
-				        </div>
-				    </div>
-				
-				    <!-- 折半の場合，誰が誰にいくら払う必要があるかを表示 -->
-				    <div class="col-md-6 col-lg-6 mb-3" th:unless="${#lists.isEmpty(list)}" th:each="entry : ${differencesMap}">
-				        <div class="card" th:if="${entry.value < 0}">
-				            <div class="card-body">
-				                <h5 class="card-title fw-bold"><i class="bi bi-cash"></i> 支払い情報</h5>
-				                <p class="card-text">
-				                    <span th:text="${entry.key}"></span>が
-				                    <span th:each="payee : ${differencesMap}">
-				                        <span th:if="${payee.value > 0}" th:text="|${payee.key}に${-entry.value}円払う|"></span>
-				                    </span>
-				                </p>
-				            </div>
-				        </div>
-				    </div>
+			<div class="row mt-3">
+				<!-- 合計金額を表示 -->
+				<div class="col-md-6 col-lg-6 mb-3" th:unless="${#lists.isEmpty(list)}">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title fw-bold"><i class="bi bi-cash-stack"></i>[[${year}]]年[[${month}]]月
+							</h5>
+							<p class="card-text">合計金額：[[${targetDateTotalPrice}]]円</p>
+						</div>
+					</div>
 				</div>
 
+				<!-- それぞれの人の合計金額を表示 -->
+				<div class="col-md-6 col-lg-6 mb-3" th:unless="${#lists.isEmpty(list)}"
+					th:each="element : ${personTotalMap}">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title fw-bold"><i class="bi bi-person-fill"></i> [[${element.key}]]</h5>
+							<p class="card-text">合計金額：[[${element.value}]]円</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- 折半の場合，誰が誰にいくら払う必要があるかを表示 -->
+				<div class="col-md-6 col-lg-6 mb-3" th:unless="${#lists.isEmpty(list)}"
+					th:each="entry : ${differencesMap}">
+					<div class="card" th:if="${entry.value < 0}">
+						<div class="card-body">
+							<h5 class="card-title fw-bold"><i class="bi bi-cash"></i> 支払い情報</h5>
+							<p class="card-text">
+								<span th:text="${entry.key}"></span>が
+								<span th:each="payee : ${differencesMap}">
+									<span th:if="${payee.value > 0}" th:text="|${payee.key}に${-entry.value}円払う|"></span>
+								</span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
 	</div>
+	
+
 </body>
+
 </html>

@@ -1,5 +1,9 @@
 /* styles.css */
 
+html {
+    overflow-y: scroll;
+}
+
 body {
 	font-family: "Hiragino Kaku Gothic ProN",
 	"Hiragino Sans", "Noto Sans", Meiryo, sans-serif;
@@ -7,5 +11,5 @@ body {
 
     
 .container {
-    max-width: 800px;
+    max-width: 1000px;
 }

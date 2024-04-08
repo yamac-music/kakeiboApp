@@ -26,7 +26,8 @@ import com.example.kakeiboApp.repository.KakeiboRepository;
 import com.example.kakeiboApp.service.KakeiboService;
 
 @Controller
-@RequestMapping("/")
+
+@RequestMapping("/home")
 public class KakeiboController {
 	//DI対象
 	@Autowired
@@ -94,6 +95,12 @@ public class KakeiboController {
 		model.addAttribute("title", "家計簿　登録用フォーム");
 		
 		//支払額を計算した結果のmapをModelに格納
+		//もし人がいないなら、空のMapを返す
+		if (personTotalMap.isEmpty()) {
+			model.addAttribute("differencesMap", new HashMap<String, Integer>());
+			return "home";
+		}
+
 		Map<String, Integer> differencesMap = calculateExpenseDifference(personTotalMap, targetDateTotalPrice);
 		model.addAttribute("differencesMap", differencesMap);
 		

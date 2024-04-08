@@ -7,3 +7,11 @@ spring:
 
   messages:
     basename: ValidationMessages
+    
+  security:
+    user:
+      password: password
+      username: user
+    admin:
+      password: password
+      username: admin
