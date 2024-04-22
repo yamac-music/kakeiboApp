@@ -182,7 +182,7 @@ public class KakeiboController {
 		}else {
 			service.insertKakeibo(kakeibo);
 			redirectAttributes.addFlashAttribute("complete", "入力が完了しました");
-			return "redirect:/";
+			return "redirect:/home";
 		}
 	}
 	
@@ -192,7 +192,7 @@ public class KakeiboController {
 		//1件削除
 		service.deleteOneByID(Integer.parseInt(id));
 		redirectAttributes.addFlashAttribute("delcomplete", "削除が完了しました");
-		return "redirect:/";
+		return "redirect:/home";
 	}
 	
 	//データ1件取得して、フォームに表示
@@ -221,7 +221,7 @@ public class KakeiboController {
 	}
 	
 	//idをキーとしてデータ更新
-	@PostMapping("/update")
+	@PostMapping("home/update")
 	public String update(@Validated KakeiboForm kakeiboForm, BindingResult bindingResult, 
 						Model model, RedirectAttributes redirectAttributes) {
 		
@@ -235,7 +235,7 @@ public class KakeiboController {
 		}else {
 			service.updateKakeibo(kakeibo);
 			redirectAttributes.addFlashAttribute("complete", "編集が完了しました");
-			return "redirect:/";
+			return "redirect:/home";
 		}
 	}
 
